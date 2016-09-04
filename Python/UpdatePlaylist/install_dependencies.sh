@@ -7,7 +7,7 @@ sudo pip install pafy
 #python setup.py install
 
 echo 'Setting Environment Variables...'
-echo 'Playlist_Location=https://www.youtube.com/watch?v=SjahQsqSLLY&index=1&list=PLINP9i2Sqbf-vCwVXXfEvJOTnco5GOjMf' >> ~/.bashrc
+echo "export Playlist_Location='https://www.youtube.com/watch?v=SjahQsqSLLY&index=1&list=PLINP9i2Sqbf-vCwVXXfEvJOTnco5GOjMf'" >> ~/.bashrc
 
 
 

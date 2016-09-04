@@ -6,6 +6,9 @@ sudo pip install Flask
 echo "Install Beautiful Soup"
 sudo pip install beautifulsoup4
 
+echo "Installing Twilio..."
+sudo pip install twilio
+
 echo 'Setting Environment Variables....'
 echo 'export Twilio_Sid=<twilio sid>' >> ~/.bashrc
 echo 'export Twilio_Token=<twilio token>' >> ~/.bashrc

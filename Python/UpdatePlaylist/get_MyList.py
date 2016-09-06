@@ -129,18 +129,18 @@ def checkForPhoneConnection(usb_t):
 		return 0
 
 def runtasks(LINK,usb_t):
-	'''
+	
 	if makeDirectoryForStorage():
 		pass
 	else:
 		'Directory does not exist\n'
 		sys.exit()
-	'''
+	
 	
 	try:
 			
 		os.chdir('Videos/')
-		'''
+		
 		playlist = pafy.get_playlist(LINK)
 	
 		no_of_songs = len(playlist['items'])
@@ -162,7 +162,7 @@ def runtasks(LINK,usb_t):
 			print 'Success in mp3 conversion'
 		else:
 			return 0
-		'''
+		
 		if checkForPhoneConnection(usb_t):
 			print 'Connection found\n'
             		return 1
@@ -177,7 +177,7 @@ def runtasks(LINK,usb_t):
 	return 1
 		
 if __name__ == '__main__':
-	#setEnvironment()
+	setEnvironment()
 	
 	parser = argparse.ArgumentParser()
 

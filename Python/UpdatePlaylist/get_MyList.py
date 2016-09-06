@@ -73,7 +73,7 @@ def convertToMp3():
 
 # Checks if phone is connected to the system
 def viaUSB(usb_tokens):
-	print 'via usb'
+
 	connected_devices = subprocess.check_output('lsusb',shell=True)
 	connected_devices = connected_devices.split('\n')
 	regex_extract_id = "ID\s*(\S+?:\S+)"
@@ -108,7 +108,8 @@ def transferAudio():
 	try:
 		os.chdir('../Audios/')
 		for song in os.listdir('.'):
-			os.system('sudo cp ' +str(song) + ' /media/prakhar/')
+			os.system('cp ' +str(song) + ' /media/external-new/Internal\ storage/Download/')
+			print 'transferred'
 		return 1
 	except Exception as e:
 		print e
@@ -119,38 +120,35 @@ def checkForPhoneConnection(usb_t):
 	print 'checking'
 	if viaUSB(usb_t):
 		print '\nMobile is connected by usb'
-		transferAudio()
-		sys.exit()
-	elif viaBLUETOOTH():
-		print '\nMobile is connected by bluetooth'
-		#transferAudio()
-	elif viaWIFI():
-		print '\nMobile is connected by wifi'
-		#transferAudio()
-	else:
+	        if transferAudio():
+			return 1
+		else:
+			return 0
+       	else:
+		print 'Problem in transferring\n'
 		return 0
 
-	return 1
-
-
 def runtasks(LINK,usb_t):
-
+	'''
 	if makeDirectoryForStorage():
 		pass
 	else:
 		'Directory does not exist\n'
 		sys.exit()
-
+	'''
+	
 	try:
+			
 		os.chdir('Videos/')
+		'''
 		playlist = pafy.get_playlist(LINK)
 	
 		no_of_songs = len(playlist['items'])
-		#print no_of_songs
-		song_downloadable_link = []
-	
+		print no_of_songs
+        	song_downloadable_link = []
+
 		# loop through songs and fetch their URL
-		for song_id in range(0,no_of_songs-1):
+		for song_id in range(0,3):
 			song_attributes = playlist['items'][song_id]['pafy'].getbest()
 			song_attributes.download()
 			
@@ -164,9 +162,10 @@ def runtasks(LINK,usb_t):
 			print 'Success in mp3 conversion'
 		else:
 			return 0
-		
+		'''
 		if checkForPhoneConnection(usb_t):
 			print 'Connection found\n'
+            		return 1
 		else:
 			print 'Mobile not connected\n'
 			return 0
@@ -178,15 +177,16 @@ def runtasks(LINK,usb_t):
 	return 1
 		
 if __name__ == '__main__':
-	setEnvironment()
+	#setEnvironment()
 	
 	parser = argparse.ArgumentParser()
 
-	parser.add_argument('-u', action='store', dest='usb_tokens', help='Stores the port and id for USB device')
+	parser.add_argument('-u', action='store', dest='usb_tokens',help="Information about vendor ID and one more ID")
+
 	results = parser.parse_args()
 
 
-	LINK_LOC = getLinkLocation()	
+	LINK_LOC = getLinkLocation()
 
 	if runtasks(LINK_LOC,results.usb_tokens):
 		print 'Successful Exit...'

@@ -12,6 +12,7 @@ from prettytable import PrettyTable
 import os
 import string
 import re
+import dropbox
 
 
 def setEnvironment():
@@ -104,9 +105,13 @@ def viaWIFI():
 	pass
 
 
+# Transfers the song, called when connection found
 def transferAudio():
 	try:
 		os.chdir('../Audios/')
+
+		# For all songs in current directory 
+		# copy them to mobile
 		for song in os.listdir('.'):
 			os.system('cp ' +str(song) + ' /media/external-new/Internal\ storage/Download/')
 			print 'transferred'
@@ -116,6 +121,7 @@ def transferAudio():
 		return 0
 		
 
+# Checks for Phone connection to laptop via different mediums
 def checkForPhoneConnection(usb_t):
 	print 'checking'
 	if viaUSB(usb_t):
@@ -128,6 +134,26 @@ def checkForPhoneConnection(usb_t):
 		print 'Problem in transferring\n'
 		return 0
 
+
+# Uploads the songs to DropBox for sharing 
+def uploadToDropbox(API_KEY):
+
+	# Current directory is Audio Only, otherwise had to set
+	dbx_obj = dropbox.Dropbox(API_KEY)
+
+	try:
+		for songs in os.listdir('.'):
+			# Upload the songs to `my_playlist` folder
+			# `my_playlist` folder will be created if it dne
+			dbx_obj.files_upload(song,'/my_playlist/')
+
+		return 1
+
+	except Exception as e:
+		return 0
+
+
+# Instantiates all the major tasks
 def runtasks(LINK,usb_t):
 	
 	if makeDirectoryForStorage():
@@ -169,6 +195,15 @@ def runtasks(LINK,usb_t):
 		else:
 			print 'Mobile not connected\n'
 			return 0
+		
+		API_KEY_DROPBOX = os.environ.get('DropboxApiKey')
+		if uploadToDropbox(API_KEY_DROPBOX):
+			print 'Uploaded\n'
+			return 1
+		else:
+			print 'Failed to upload\n'
+			return 0
+
 
 	except Exception as e:
 		print 'Unable to Fetch Songs\n'

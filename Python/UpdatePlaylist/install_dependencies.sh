@@ -6,6 +6,9 @@ sudo pip install pafy
 echo 'Installing Convertor...'
 sudo apt-get install pacpl
 
+echo 'Installing Dropbox...'
+sudo pip install dropbox
+
 echo 'Installing PyUSB...'
 sudo pip install pyusb --pre
 
